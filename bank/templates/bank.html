@@ -1,0 +1,48 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h2>Simple Bank List</h2>
+
+<form id="BankForm" action="{% url 'banks' %}" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="mt-2 mb-3">
+        <label class="form-label">{{ field.label_tag }}</label>
+        {{ field }}
+    </div>
+    {% endfor %}
+</form>
+
+<div class="row">
+    <table id="table" data-toggle="table" data-height="560" data-pagination="true">
+        <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Birthday</th>
+                <th scope="col">ID</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for client in clients %}
+            <tr>
+                <th>{{client.first_name}}</th>
+                <th>{{client.last_name}}</th>
+                <td>{{client.date_of_birth}}</td>
+                <td>{{client.dni}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById('id_select').addEventListener('change', (ev) => {
+            document.getElementById('BankForm').submit();
+        })
+    });
+</script>
+{% endblock %}
